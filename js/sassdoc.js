@@ -9,7 +9,7 @@
       },
       settings = {
         docs: 'sassdoc.json',
-        source_viewer: 'http://viewvc.corp.linkedin.com/viewvc/netrepo/network/trunk/content/static/scss/lib/{FILE}?view=markup#l{LINE}'
+        source_viewer: 'http://viewvc.corp.linkedin.com/viewvc/netrepo/network/trunk/content/static/scss/lib/davinci/{FILE}?view=markup#l{LINE}'
       },
       sources = {},
       showIt;
