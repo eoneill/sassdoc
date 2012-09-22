@@ -1,0 +1,7 @@
+sassdoc-*.gem
+Gemfile.lock
+*.DS_Store
+*.lock
+Icon
+._*
+tmp/*

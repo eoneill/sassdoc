@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'json'
+
+def fallback_load_path(path)
+  retried = false
+  begin
+    yield
+  rescue LoadError
+    unless retried
+      $: << path
+      retried = true
+      retry
+    end
+    raise
+  end
+end
+
+fallback_load_path(File.join(File.dirname(__FILE__), '..', 'lib')) do
+  require 'sassdoc'
+end
+
+puts Sassdoc.parse(ARGV[0] || '.').to_json
