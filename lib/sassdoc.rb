@@ -32,8 +32,6 @@ module Sassdoc
       File.open(json_file, "w") {|file| file.puts json}
       if options[:viewer]
         # copy over viewer files
-        puts File.join(File.dirname(__FILE__), '..', 'viewer', '.')
-        puts dir
         FileUtils.cp_r(File.join(File.dirname(__FILE__), '..', 'viewer', '.'), dir)
         settings = {}
         settings[:viewer] = options[:scm] if options[:scm]

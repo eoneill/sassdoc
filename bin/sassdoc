@@ -27,7 +27,7 @@ end
 @options[:viewer] = true
 OptionParser.new do |opts|
   opts.banner = "Usage: sassdoc [path] [options]"
-  opts.on("-v", "--[no]-viewer", "generate the viewer") do |v|
+  opts.on("-v", "--[no-]viewer", "generate the viewer") do |v|
     @options[:viewer] = v
   end
   opts.on("-s", "--[no-]stdout", "write json output to stdout") do |s|
@@ -43,8 +43,5 @@ OptionParser.new do |opts|
     @options[:name] = n
   end
 end.parse!
-
-puts @options[:stdout]
-puts @options
 
 Sassdoc.init(ARGV[0] || '.', @options)
