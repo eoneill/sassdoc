@@ -9,7 +9,7 @@ Gem::Specification.new do |gemspec|
   gemspec.name = 'sassdoc'
   gemspec.authors = ["Eugene ONeill", "LinkedIn"]
   gemspec.summary = %q{code documentation for Sass}
-  gemspec.description = %q{generate code documentation from comments in Sass/SCSS files}
+  gemspec.description = %q{Documentation generator for Sass source code}
   gemspec.email = "oneill.eugene@gmail.com"
   gemspec.homepage = "https://github.com/eoneill/sassdoc/"
   gemspec.license = "Apache License (2.0)"
