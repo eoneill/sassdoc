@@ -2,7 +2,7 @@ require 'date'
 
 Gem::Specification.new do |gemspec|
   # Release Specific Information
-  gemspec.version = '0.0.1'
+  gemspec.version = '0.0.2'
   gemspec.date = Date.today
 
   # Gem Details
@@ -19,6 +19,7 @@ Gem::Specification.new do |gemspec|
   gemspec.files = %w(LICENSE README.md CHANGELOG.md)
   gemspec.files += Dir.glob("bin/**/*")
   gemspec.files += Dir.glob("lib/**/*")
+  gemspec.files += Dir.glob("viewer/**/*")
   
   # Gem Bookkeeping
   gemspec.rubygems_version = %q{1.3.6}
