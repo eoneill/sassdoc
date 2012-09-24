@@ -2,7 +2,7 @@ require 'date'
 
 Gem::Specification.new do |gemspec|
   # Release Specific Information
-  gemspec.version = '0.0.1.pre.1'
+  gemspec.version = '0.0.1'
   gemspec.date = Date.today
 
   # Gem Details

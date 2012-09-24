@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'json'
+require 'optparse'
 
 def fallback_load_path(path)
   retried = false
@@ -21,4 +21,30 @@ fallback_load_path(File.join(File.dirname(__FILE__), '..', 'lib')) do
   require 'sassdoc'
 end
 
-puts Sassdoc.parse(ARGV[0] || '.').to_json
+@options = {}
+@options[:destination] = './sassdoc/'
+@options[:name] = 'Sass Documentation'
+@options[:viewer] = true
+OptionParser.new do |opts|
+  opts.banner = "Usage: sassdoc [path] [options]"
+  opts.on("-v", "--[no]-viewer", "generate the viewer") do |v|
+    @options[:viewer] = v
+  end
+  opts.on("-s", "--[no-]stdout", "write json output to stdout") do |s|
+    @options[:stdout] = s
+  end
+  opts.on("-d", "--destination PATH", "path to write generated docs to") do |d|
+    @options[:destination] = d
+  end
+  opts.on("-c", "--scm URL", "URL to source control management viewer") do |c|
+    @options[:scm] = c
+  end
+  opts.on("-n", "--name DOC_NAME", "the name of the project documentation") do |n|
+    @options[:name] = n
+  end
+end.parse!
+
+puts @options[:stdout]
+puts @options
+
+Sassdoc.init(ARGV[0] || '.', @options)

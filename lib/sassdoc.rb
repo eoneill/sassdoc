@@ -1,10 +1,13 @@
+require 'fileutils'
+require 'json'
+
 module Sassdoc
   @docs = {}
   def self.parse(read)
     if File.exist? read
       if File.directory? read and Dir.chdir(read)
         # loop through each scss file in the directory
-        Dir.glob('**/_*.scss').each do |f|
+        Dir.glob('**/*.s[ac]ss').each do |f|
           self.parse_docs(f)
         end
       else
@@ -12,6 +15,37 @@ module Sassdoc
       end
     end
     return @docs
+  end
+
+  def self.init(read, options)
+    pwd = FileUtils.pwd()
+    json = self.parse(ARGV[0] || '.').to_json
+    if options[:stdout]
+      puts json
+    else
+      Dir.chdir(pwd)
+      @json_filename = 'sassdoc.json'
+      dir = options[:destination]
+      FileUtils.mkdir_p dir
+      json_file = File.join(dir, @json_filename)
+      FileUtils.touch json_file
+      File.open(json_file, "w") {|file| file.puts json}
+      if options[:viewer]
+        # copy over viewer files
+        puts File.join(File.dirname(__FILE__), '..', 'viewer', '.')
+        puts dir
+        FileUtils.cp_r(File.join(File.dirname(__FILE__), '..', 'viewer', '.'), dir)
+        settings = {}
+        settings[:viewer] = options[:scm] if options[:scm]
+        settings[:docs] = @json_filename
+        settings = settings.to_json
+        %w(index.html tmpl/view.tmpl).each do |src|
+          src = File.join(dir, src)
+          text = File.read(src)
+          File.open(src, "w") {|file| file.puts text.gsub(/\{SASSDOC_TITLE\}/, options[:name]).gsub(/\{SASSDOC_SETTINGS\}/, settings)}
+        end
+      end
+    end
   end
 
 private
@@ -93,7 +127,7 @@ private
               # store the line number
               tmp[:data][:linenum] = linenum
               # get the category
-              cat = tmp[:data]['category'] || category || file.to_s.gsub('.scss','').gsub('_','')
+              cat = tmp[:data]['category'] || category || file.to_s.gsub(/\.s[ac]ss/,'').gsub('_','')
               tmp[:data]['category'] = cat unless tmp[:data]['category']
               # push it onto docs
               @docs[cat] = {} unless @docs[cat]
