@@ -2,6 +2,31 @@
 
 Documentation generator for Sass source code
 
+## Using Sassdoc
+
+### Install the gem
+
+```sh
+[sudo] gem install sassdoc
+```
+
+### Use the CLI to parse source docs
+
+```sh
+sassdoc ~/workspace/project
+```
+
+#### Options
+
+```sh
+Usage: sassdoc [path] [options]
+    -v, --[no-]viewer                generate the viewer
+    -s, --[no-]stdout                write json output to stdout
+    -d, --destination PATH           path to write generated docs to
+    -c, --scm URL                    URL to source control management viewer
+    -n, --name DOC_NAME              the name of the project documentation
+```
+
 ## Examples
 
 ### Some simple examples
