@@ -6,32 +6,32 @@ Documentation generator for Sass source code
 
 ### Install the gem
 
-```sh
+sh
 [sudo] gem install sassdoc
-```
+
 
 ### Use the CLI to parse source docs
 
-```sh
+sh
 sassdoc ~/workspace/project
-```
+
 
 #### Options
 
-```sh
+sh
 Usage: sassdoc [path] [options]
     -v, --[no-]viewer                generate the viewer
     -s, --[no-]stdout                write json output to stdout
     -d, --destination PATH           path to write generated docs to
     -c, --scm URL                    URL to source control management viewer
     -n, --name DOC_NAME              the name of the project documentation
-```
+
 
 ## Examples
 
 ### Some simple examples
 
-```scss
+scss
 // this is an example mixin
 // @mixin     example-mixin
 // @param     $first {String} the first parameter is a string
@@ -42,9 +42,9 @@ Usage: sassdoc [path] [options]
 @mixin example-mixin($first, $second, $third) {
   // ...
 }
-```
 
-```scss
+
+scss
 // this is an example function
 // @function  example-function
 // @param     $type {String} the type of example [easy|hard]
@@ -52,11 +52,11 @@ Usage: sassdoc [path] [options]
 @function example-function($type) {
   @return index(easy hard, $type);
 }
-```
+
 
 ### Defining private methods
 
-```scss
+scss
 // this is a private function
 // @function  -private-function
 // @private
@@ -65,19 +65,19 @@ Usage: sassdoc [path] [options]
 @function -private-function($type) {
   //
 }
-```
+
 
 ### Specifying a category
 
-By default, Sassdoc will determine the category by the file path. You can define your own organization structure using the `@category` keyword.
+By default, Sassdoc will determine the category by the file path. You can define your own organization structure using the @category keyword.
 
 This keyword can be used to set the scope of the entire file, or a single method.
 
 #### Global category
 
-In this example, both `function-one` and `function-two` will be scoped to the `utilities` label
+In this example, both function-one and function-two will be scoped to the utilities label
 
-```scss
+scss
 // @category  utilities
 
 // first function
@@ -95,13 +95,13 @@ In this example, both `function-one` and `function-two` will be scoped to the `u
 @function function-two($first) {
   //
 }
-```
+
 
 #### Individual category
 
-In this example, `function-one` will be labeled as `utilities` (from the Global scope), while `function-two` will be categorized as `utilities/hacks`
+In this example, function-one will be labeled as utilities (from the Global scope), while function-two will be categorized as utilities/hacks
 
-```scss
+scss
 // @category  utilities
 
 // first function
@@ -120,7 +120,7 @@ In this example, `function-one` will be labeled as `utilities` (from the Global 
 @function function-two($first) {
   //
 }
-```
+
 
 ## Supported Keywords
 
@@ -130,39 +130,39 @@ In this example, `function-one` will be labeled as `utilities` (from the Global 
     <th>meaning</th>
   </tr>
   <tr>
-    <td>`@mixin`</td>
+    <td>@mixin</td>
     <td>define a mixin</td>
   </tr>
   <tr>
-    <td>`@function`</td>
+    <td>@function</td>
     <td>define a function</td>
   </tr>
   <tr>
-    <td>`@param`</td>
+    <td>@param</td>
     <td>a parameter for a method</td>
   </tr>
   <tr>
-    <td>`@return`</td>
+    <td>@return</td>
     <td>what is returned in the method</td>
   </tr>
   <tr>
-    <td>`@private`</td>
+    <td>@private</td>
     <td>flag a method as private</td>
   </tr>
   <tr>
-    <td>`@usage`</td>
+    <td>@usage</td>
     <td>provide a block of example usage</td>
   </tr>
   <tr>
-    <td>`@category`</td>
+    <td>@category</td>
     <td>define a category for the method</td>
   </tr>
   <tr>
-    <td>`@link`</td>
+    <td>@link</td>
     <td>link off to a URL (limited support)</td>
   </tr>
   <tr>
-    <td>`@see`</td>
+    <td>@see</td>
     <td>reference another method (limited support)</td>
   </tr>
-</table>
+</table>@
