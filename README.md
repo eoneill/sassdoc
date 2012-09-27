@@ -108,7 +108,7 @@ In this example, `function-one` will be labeled as `utilities` (from the Global 
 // @function  function-one
 // @param     $first {Color} a color
 // @return    {Boolean} true of it succeed, false if it failed
-@function function-two($first) {
+@function function-one($first) {
   //
 }
 
