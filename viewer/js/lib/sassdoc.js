@@ -9,9 +9,9 @@
           'mixins'    : 1,
           'privates'  : -1
         },
-        settings = $.extend(window.Sassdoc.settings, {
+        settings = $.extend({
           docs: 'sassdoc.json'
-        }),
+        }, window.Sassdoc.settings || {}),
         sources = {},
         showIt;
 
