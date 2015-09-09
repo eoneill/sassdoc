@@ -1,4 +1,4 @@
-# Sassdoc
+# Sassdoc is no longer maintained. We recommend using the much better [SassDoc](http://sassdoc.com/).
 
 Documentation generator for Sass source code
 
