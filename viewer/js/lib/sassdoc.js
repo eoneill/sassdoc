@@ -2,18 +2,19 @@
   window.Sassdoc || (window.Sassdoc = {});
   window.Sassdoc.init = function() {
     var sassdoc,
-        rendered = 0,
-        templates = ['nav', 'toc', 'view'],
-        filters = {
-          'functions' : 1,
-          'mixins'    : 1,
-          'privates'  : -1
-        },
-        settings = $.extend(window.Sassdoc.settings, {
-          docs: 'sassdoc.json'
-        }),
-        sources = {},
-        showIt;
+      rendered = 0,
+      templates = ['nav', 'toc', 'view'],
+      filters = {
+        'functions' : 1,
+        'mixins'    : 1,
+        'privates'  : -1
+      },
+      settings = $.extend({
+        docs: 'sassdoc.json',
+        templatePath: 'tmpl'
+      }, window.Sassdoc.settings || {}),
+      sources = {},
+      showIt;
 
     Array.prototype.remove = function(from, to) {
       var rest = this.slice((to || from) + 1 || this.length);
@@ -46,8 +47,8 @@
 
     function query(name){
       var q = unescape(window.location.search) + '&',
-          regex = new RegExp('.*?[&\\?]' + name + '=(.*?)&.*'),
-          val = q.replace(regex, "$1");
+        regex = new RegExp('.*?[&\\?]' + name + '=(.*?)&.*'),
+        val = q.replace(regex, "$1");
       return val == q ? undefined : val;
     }
 
@@ -57,11 +58,11 @@
           $.extend(settings, {
             docs: query('docs')
           });
-        break;
+          break;
         case 'target':
         default:
           parseTarget(window.location.hash.replace('#', ''));
-        break;
+          break;
       }
     }
 
@@ -78,12 +79,12 @@
       data.methods = [];
       for(var category in sassdoc) {
         var toc = {},
-            methods = sassdoc[category],
-            normCategory = category.replace(/[ \:\.\/\\]/g,'-');
-            tocMethods = [];
+          methods = sassdoc[category],
+          normCategory = category.replace(/[ \:\.\/\\]/g,'-');
+        tocMethods = [];
         for(var key in methods ) {
           var method = $.extend({}, methods[key]),
-              signature = [];
+            signature = [];
           // if it begins with an underscore, it assume it's private
           method['private'] == method['private'] || /^_.*/.test(key);
           // if this isn't a private method, use hyphens instead of underscores
@@ -97,8 +98,8 @@
 
           function getAcceptableValues(description) {
             var pattern = /.*\[(.*|.*)\].*/,
-                match = description.match(pattern),
-                values = match ? match[1].replace(/\|/g, ' | ') : false;
+              match = description.match(pattern),
+              values = match ? match[1].replace(/\|/g, ' | ') : false;
             return values;
           }
 
@@ -122,28 +123,28 @@
               switch(p) {
                 case 'see':
                   /* TODO: this doesn't work correctly yet, need to improve the regex
-                  var global = patterns[p].g,
-                      individual = patterns[p].i;
-                  description = description.replace(individual, function(match, unit) {
-                    return '<a href="#method:'+match+'">'+match+'</a>';
-                  });
-                  */
-                break;
+                   var global = patterns[p].g,
+                   individual = patterns[p].i;
+                   description = description.replace(individual, function(match, unit) {
+                   return '<a href="#method:'+match+'">'+match+'</a>';
+                   });
+                   */
+                  break;
                 case 'link':
                   description = description.replace(patterns[p], function(match, unit) {
                     return '<a href="'+match+'" target="_blank">'+match+'</a>';
                   });
-                break;
+                  break;
                 case 'email':
                   description = description.replace(patterns[p], function(match, unit) {
                     return '<a href="mailto:'+match+'">'+match+'</a>';
                   });
-                break;
+                  break;
                 default:
                   description = description.replace(patterns[p], function(match, unit) {
                     return '<span class="'+p+'">'+match+'</span>';
                   });
-                break;
+                  break;
               }
             }
             return description;
@@ -189,7 +190,7 @@
           }
           if(method.usage) {
             var usage = method.usage,
-                replacer = (method.mixin ? '@include ': '');
+              replacer = (method.mixin ? '@include ': '');
             function removeIndex(array, index) {
               var rest = array.slice((to || from) + 1 || array.length);
               array.length = from < 0 ? array.length + from : from;
@@ -248,7 +249,7 @@
     }
 
     function getTemplate(tmpl) {
-      $.ajax('tmpl/'+tmpl+'.tmpl', {
+      $.ajax(settings.templatePath+'/'+tmpl+'.tmpl', {
         success: function(html) {
           render(tmpl, html);
         }
@@ -263,11 +264,11 @@
       }
       $(function() {
         var $toc = $('#tmpl-toc'),
-            $view = $('#tmpl-view'),
-            $nav = $('#tmpl-nav'),
-            $body = $('body'),
-            $win = $(window),
-            $revealed = $();
+          $view = $('#tmpl-view'),
+          $nav = $('#tmpl-nav'),
+          $body = $('body'),
+          $win = $(window),
+          $revealed = $();
 
         showIt = function(action, what, other, source, e, preserve) {
           what = what.replace('#','');
@@ -288,13 +289,13 @@
                 $body.addClass('hide-all-categories');
                 $revealed = $('.reveal, .is-category-'+what).addClass('reveal');
               }
-            break;
+              break;
             case 'source':
               // if there's a source viewer, use it, otherwise
               if(settings.source_viewer && (/^(http(s?)):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/i).test(settings.source_viewer)) {
                 var h = $win.height() - 81,
-                    $iframe = $('<iframe>').attr('src', settings.source_viewer.replace(/\{FILE\}/gi, sources[what]).replace(/\{LINE\}/gi, other))
-                      .attr('height', h).css('height', h+'px');
+                  $iframe = $('<iframe>').attr('src', settings.source_viewer.replace(/\{FILE\}/gi, sources[what]).replace(/\{LINE\}/gi, other))
+                    .attr('height', h).css('height', h+'px');
                 $win.resize(function() {
                   var h = $win.height() - 81;
                   $('iframe', '.source-viewer').attr('height', h).css('height', h+'px');
@@ -307,12 +308,12 @@
                 $body.addClass('hide-all-sources');
                 $revealed = $('.is-source-'+what).addClass('reveal');
               }
-            break;
+              break;
             case 'filter':
               var f = ['addClass', 'removeClass'];
               $body[f[(other < 0) ? 0 : 1]]('hide-'+what);
               $('.'+what, $('.filters'))[f[(other > 0) ? 0 : 1]]('label-info');
-            break;
+              break;
             case 'toggle':
               if(what === 'unminimize') {
                 $(source).hide().parent().parent().find('.minimize').removeClass('minimize');
@@ -326,11 +327,11 @@
                   parseURL();
                 }
               }
-            break;
+              break;
             case 'method':
               $body.addClass('hide-all-methods');
               $revealed = $('#'+what).addClass('reveal');
-            break;
+              break;
             case 'search':
               if(!what || what.length < 2) {
                 // bailout
@@ -341,12 +342,12 @@
               previousSearch = what;
               $body.addClass('hide-all-methods');
               var searchFor = what.split(' '),
-                  searchForIds = '[id*='+searchFor.join('][id*=')+']';
+                searchForIds = '[id*='+searchFor.join('][id*=')+']';
               // text search (only searches 'overview' section)
               if($body.hasClass('toggle-search')) {
                 $('.is-method', '.methods').each(function() {
                   var $text = $('.overview', $(this)).text(),
-                      match = true;
+                    match = true;
                   for(var i=searchFor.length; i--; ) {
                     if($text.indexOf(searchFor[i]) === -1) {
                       match = false;
@@ -363,7 +364,7 @@
               // recompose the $revealed collection
               $revealed = $('.reveal');
               window.location.hash = 'search:'+searchFor.join(' ');
-            break;
+              break;
           }
           showIndex();
         }
@@ -374,8 +375,8 @@
             return true;
           }
           var tmp = ['private', 'function', 'mixin'],
-              disqualifiers = [],
-              disqualified = 0;
+            disqualifiers = [],
+            disqualified = 0;
           for(var i=tmp.length; i--; ) {
             if($body.hasClass('hide-'+tmp[i]+'s')) {
               disqualifiers.push('is-'+tmp[i]);
@@ -395,9 +396,9 @@
 
         function showIndex() {
           var index = 'show-index',
-              viewerClass = 'show-viewer',
-              speed = 'medium',
-              viewer, info;
+            viewerClass = 'show-viewer',
+            speed = 'medium',
+            viewer, info;
           if(arguments) {
             if(arguments[0] === 'viewer') {
               viewer = true;
@@ -428,9 +429,9 @@
         $body.delegate('a', 'click', function(e) {
           parseTarget($(this).attr('href'), this, e);
         })
-        .delegate('.filters a, .toggles a', 'click', function(e) {
-          e.preventDefault();
-        });
+          .delegate('.filters a, .toggles a', 'click', function(e) {
+            e.preventDefault();
+          });
 
         // dirty search
         $body.delegate('#method-search', 'keyup', function() {
